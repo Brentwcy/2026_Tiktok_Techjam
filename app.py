@@ -40,6 +40,20 @@ ul.options, .dropdown-menu { z-index: 9999 !important; max-height: 320px !import
 .image-box { height: 330px !important; }
 .image-box .image-container, .image-box .wrap { height: 330px !important; display: flex !important; align-items: center !important; justify-content: center !important; }
 .image-box img { max-height: 300px !important; width: auto !important; object-fit: contain !important; margin: auto !important; }
+
+/* Polished Action Buttons */
+.action-btn-row { margin-top: 6px !important; gap: 10px !important; }
+.primary-btn { font-weight: 600 !important; font-size: 1.05rem !important; border-radius: 8px !important; }
+.clear-btn { font-weight: 500 !important; font-size: 0.95rem !important; border-radius: 8px !important; }
+
+/* Hide Gradio footer and navigation */
+footer, .footer, .gradio-container footer, .gradio-container .footer {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
 """
 
 
@@ -86,36 +100,7 @@ def build_demo(checkpoint: Path = DEFAULT_CHECKPOINT, threshold: float = 0.5) ->
             "Likely real": eval_real_prob,
         }
 
-        # Build explanation with robustness impact comparison
-        is_decision_stable = (decision == clean_decision)
-        delta_shift = (eval_ai_prob - clean_ai_prob) * 100.0
-
-        if is_transformed:
-            stability_badge = "✅ **Decision Invariant (Robust)**" if is_decision_stable else "⚠️ **Decision Flipped Under Degradation**"
-            explanation = (
-                f"### Decision: {decision}\n\n"
-                f"**Active Decision Confidence:** {confidence:.1%}  \n"
-                f"**Active AI-Generated Probability:** {eval_ai_prob:.1%}  \n"
-                f"**Applied Transformation:** `{transform_choice}`\n\n"
-                f"---\n"
-                f"### 🛡️ Robustness Analysis\n"
-                f"- **Clean Image P(AI):** {clean_ai_prob:.1%} (Decision: *{clean_decision}*)\n"
-                f"- **Transformed Image P(AI):** {eval_ai_prob:.1%} (Decision: *{decision}*)\n"
-                f"- **Confidence Shift (Δ):** {delta_shift:+.1f}%\n"
-                f"- **Status:** {stability_badge}\n\n"
-                f"*(Model maintains detection reliability even under aggressive post-processing).* "
-            )
-        else:
-            explanation = (
-                f"### Decision: {decision}\n\n"
-                f"**Decision Confidence:** {confidence:.1%}  \n"
-                f"**AI-Generated Probability:** {eval_ai_prob:.1%}  \n"
-                f"**Threshold:** {threshold:.0%}\n\n"
-                f"---\n"
-                f"💡 *Tip: Select a transformation from the dropdown to test model robustness under real-world social-media degradations.*"
-            )
-
-        return preview_image, scores, explanation
+        return preview_image, scores
 
     with gr.Blocks(
         title="AI-Generated Image Detector — Track 5",
@@ -128,7 +113,7 @@ def build_demo(checkpoint: Path = DEFAULT_CHECKPOINT, threshold: float = 0.5) ->
             "to test whether the detection holds under realistic platform degradations (JPEG re-compression, blur, downsampling, sensor noise, etc.)."
         )
 
-        # Side-by-side matching image displays
+        # Two-column layout: Left (Inputs & Controls) | Right (Preview & Results)
         with gr.Row():
             with gr.Column(scale=1):
                 image_input = gr.Image(
@@ -138,18 +123,6 @@ def build_demo(checkpoint: Path = DEFAULT_CHECKPOINT, threshold: float = 0.5) ->
                     height=330,
                     elem_classes=["image-box"],
                 )
-            with gr.Column(scale=1):
-                preview_output = gr.Image(
-                    type="pil",
-                    label="2. Transformed Image Preview (Model Input)",
-                    interactive=False,
-                    height=330,
-                    elem_classes=["image-box"],
-                )
-
-        # Interactive controls
-        with gr.Row():
-            with gr.Column(scale=3):
                 transform_dropdown = gr.Dropdown(
                     choices=list(TRANSFORM_OPTIONS.keys()),
                     value="None (Clean Image)",
@@ -158,41 +131,42 @@ def build_demo(checkpoint: Path = DEFAULT_CHECKPOINT, threshold: float = 0.5) ->
                     filterable=False,
                     interactive=True,
                 )
-            with gr.Column(scale=1, min_width=160):
-                analyze_button = gr.Button("⚡ Analyze Image", variant="primary", size="lg")
-                clear_button = gr.ClearButton(
-                    components=[image_input, transform_dropdown],
-                    value="Clear All",
-                    size="sm",
-                )
+                with gr.Row(elem_classes=["action-btn-row"], equal_height=True):
+                    analyze_button = gr.Button(
+                        "⚡ Analyze Image",
+                        variant="primary",
+                        size="lg",
+                        scale=3,
+                        elem_classes=["primary-btn"],
+                    )
+                    clear_button = gr.ClearButton(
+                        components=[image_input, transform_dropdown],
+                        value="🗑️ Clear All",
+                        size="lg",
+                        scale=1,
+                        elem_classes=["clear-btn"],
+                    )
 
-        # Results & Metrics
-        with gr.Row():
             with gr.Column(scale=1):
+                preview_output = gr.Image(
+                    type="pil",
+                    label="2. Transformed Image Preview (Model Input)",
+                    interactive=False,
+                    height=330,
+                    elem_classes=["image-box"],
+                )
                 result_label = gr.Label(
                     label="Model Confidence Scores",
                     num_top_classes=2,
                 )
-            with gr.Column(scale=1):
-                explanation = gr.Markdown("Upload an image, pick an optional transformation, and click **⚡ Analyze Image**.")
 
         # Wire clear button to reset outputs as well
-        clear_button.add([preview_output, result_label, explanation])
+        clear_button.add([preview_output, result_label])
 
         analyze_button.click(
             fn=predict,
             inputs=[image_input, transform_dropdown],
-            outputs=[preview_output, result_label, explanation],
-        )
-
-        gr.Markdown(
-            "---\n"
-            "### 📊 Key Benchmark Summary (CIFAKE Held-Out Test Set, N=20,000)\n"
-            "- **Clean Baseline Accuracy**: **97.58%** (AUROC: 99.75%)\n"
-            "- **Average Transformed Accuracy**: **94.45%** across all 14 Track 5 degradation settings\n"
-            "- **Worst-Case Condition (0.25× Resize Roundtrip)**: **87.55%**\n"
-            "- **Heavy Blur (σ=2.0)**: **89.65%** | **JPEG 30**: **95.15%**\n\n"
-            f"*Runtime device: `{detector.device}` | Parameters: ~5.3M (EfficientNet-B0)*"
+            outputs=[preview_output, result_label],
         )
 
     return demo
