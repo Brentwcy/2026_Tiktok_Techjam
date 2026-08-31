@@ -1,0 +1,4 @@
+backbone,training_scope,clean_accuracy,clean_auc,average_transformed_accuracy,worst_case_accuracy,worst_case_setting
+EfficientNet-B0,head warmup then full fine-tuning,0.9758,0.997502,0.944464,0.87545,resize_0.25
+DINOv2 ViT-S/14,frozen backbone and trained binary head,0.9547,0.992419,,,
+DINOv3 ViT-S/16,frozen backbone and trained binary head,0.91795,0.976330,0.879268,0.7747,resize_0.25

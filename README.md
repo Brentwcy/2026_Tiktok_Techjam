@@ -168,7 +168,16 @@ Full per-transform results are available in
 [`results/robustness_table.csv`](results/robustness_table.csv). The tracked
 [`results/train_log.csv`](results/train_log.csv) records the four training
 epochs, while [`results/error_summary.csv`](results/error_summary.csv)
-provides compact per-condition misclassification counts.
+provides compact per-condition misclassification counts. A sanitized set of
+the most confident false positives and false negatives from every condition
+is included in [`results/error_examples.csv`](results/error_examples.csv).
+
+The backbone comparison is independently auditable from
+[`results/model_comparison.csv`](results/model_comparison.csv),
+[`results/dinov2_clean_results.csv`](results/dinov2_clean_results.csv), and
+[`results/dinov3_robustness_table.csv`](results/dinov3_robustness_table.csv).
+The DINOv3 head-training log is also tracked in
+[`results/dinov3_train_log.csv`](results/dinov3_train_log.csv).
 
 Inference was run on 20,000 images to produce the required `{image_path, pred}`
 JSON output.
@@ -192,7 +201,7 @@ JSON output.
   run yet. Numbers above are CIFAKE-internal only.
 - With more time: add SID_Set for resolution/generator diversity, run the
   WildFake demo-subset evaluation, and inspect the false-positive/negative
-  gallery in `results/error_analysis.csv` for systematic failure patterns.
+  examples in `results/error_examples.csv` for systematic failure patterns.
 
 ## Team contributions
 

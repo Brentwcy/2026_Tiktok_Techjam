@@ -7,6 +7,8 @@
 - [x] Exact Track 5 training augmentations
 - [x] Clean and per-transform robustness evaluation
 - [x] Error summary and training log committed under `results/`
+- [x] Sanitized representative false-positive/false-negative examples
+- [x] Raw DINOv2/DINOv3 comparison metrics committed under `results/`
 - [x] Required directory-to-JSON inference script
 - [x] Public `best.pt` checkpoint
 - [x] Fresh-clone checkpoint download and inference test

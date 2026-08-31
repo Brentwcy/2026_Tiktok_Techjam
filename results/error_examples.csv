@@ -1,0 +1,61 @@
+setting,image_path,true_label,pred_label,pred_confidence,error_type
+blur_0.5,FAKE/497 (6).jpg,1,0,0.000511,false_negative
+blur_0.5,FAKE/945 (6).jpg,1,0,0.000622,false_negative
+blur_0.5,REAL/0809 (3).jpg,0,1,0.993058,false_positive
+blur_0.5,REAL/0350 (3).jpg,0,1,0.997222,false_positive
+blur_1.0,FAKE/490.jpg,1,0,0.002999,false_negative
+blur_1.0,FAKE/232.jpg,1,0,0.004104,false_negative
+blur_1.0,REAL/0022 (9).jpg,0,1,0.997465,false_positive
+blur_1.0,REAL/0855 (10).jpg,0,1,0.998489,false_positive
+blur_2.0,FAKE/290 (2).jpg,1,0,0.004706,false_negative
+blur_2.0,FAKE/137.jpg,1,0,0.008057,false_negative
+blur_2.0,REAL/0566 (5).jpg,0,1,0.998432,false_positive
+blur_2.0,REAL/0855 (10).jpg,0,1,0.999727,false_positive
+center_crop_0.8,FAKE/662 (4).jpg,1,0,0.000850,false_negative
+center_crop_0.8,FAKE/982 (3).jpg,1,0,0.002680,false_negative
+center_crop_0.8,REAL/0067 (3).jpg,0,1,0.998525,false_positive
+center_crop_0.8,REAL/0504 (3).jpg,0,1,0.999941,false_positive
+clean,FAKE/565.jpg,1,0,0.009396,false_negative
+clean,FAKE/159 (9).jpg,1,0,0.020233,false_negative
+clean,REAL/0099.jpg,0,1,0.999747,false_positive
+clean,REAL/0350 (3).jpg,0,1,0.999976,false_positive
+color_jitter_0.2,FAKE/600 (10).jpg,1,0,0.002000,false_negative
+color_jitter_0.2,FAKE/754 (4).jpg,1,0,0.007849,false_negative
+color_jitter_0.2,REAL/0099.jpg,0,1,0.999966,false_positive
+color_jitter_0.2,REAL/0350 (3).jpg,0,1,0.999975,false_positive
+jpeg_30,FAKE/836 (4).jpg,1,0,0.000619,false_negative
+jpeg_30,FAKE/159 (9).jpg,1,0,0.000662,false_negative
+jpeg_30,REAL/0440 (6).jpg,0,1,0.999130,false_positive
+jpeg_30,REAL/0207 (10).jpg,0,1,0.999542,false_positive
+jpeg_50,FAKE/159 (9).jpg,1,0,0.001758,false_negative
+jpeg_50,FAKE/19 (4).jpg,1,0,0.004783,false_negative
+jpeg_50,REAL/0099.jpg,0,1,0.999923,false_positive
+jpeg_50,REAL/0350 (3).jpg,0,1,0.999930,false_positive
+jpeg_70,FAKE/640 (3).jpg,1,0,0.007025,false_negative
+jpeg_70,FAKE/384 (3).jpg,1,0,0.007025,false_negative
+jpeg_70,REAL/0099.jpg,0,1,0.999923,false_positive
+jpeg_70,REAL/0350 (3).jpg,0,1,0.999993,false_positive
+jpeg_90,FAKE/640 (3).jpg,1,0,0.003701,false_negative
+jpeg_90,FAKE/384 (3).jpg,1,0,0.003701,false_negative
+jpeg_90,REAL/0099.jpg,0,1,0.999807,false_positive
+jpeg_90,REAL/0350 (3).jpg,0,1,0.999961,false_positive
+noise_0.02,FAKE/384 (3).jpg,1,0,0.001617,false_negative
+noise_0.02,FAKE/565.jpg,1,0,0.003346,false_negative
+noise_0.02,REAL/0099.jpg,0,1,0.999462,false_positive
+noise_0.02,REAL/0350 (3).jpg,0,1,0.999754,false_positive
+noise_0.05,FAKE/384 (3).jpg,1,0,0.000692,false_negative
+noise_0.05,FAKE/672 (3).jpg,1,0,0.001954,false_negative
+noise_0.05,REAL/0324 (8).jpg,0,1,0.999314,false_positive
+noise_0.05,REAL/0756 (3).jpg,0,1,0.999619,false_positive
+noise_0.1,FAKE/324 (3).jpg,1,0,0.006342,false_negative
+noise_0.1,FAKE/435 (10).jpg,1,0,0.007133,false_negative
+noise_0.1,REAL/0258 (3).jpg,0,1,0.997462,false_positive
+noise_0.1,REAL/0790 (6).jpg,0,1,0.998657,false_positive
+resize_0.25,FAKE/709 (4).jpg,1,0,0.002619,false_negative
+resize_0.25,FAKE/787.jpg,1,0,0.003432,false_negative
+resize_0.25,REAL/0864.jpg,0,1,0.996010,false_positive
+resize_0.25,REAL/0905 (5).jpg,0,1,0.996361,false_positive
+resize_0.5,FAKE/413.jpg,1,0,0.010943,false_negative
+resize_0.5,FAKE/290 (2).jpg,1,0,0.012988,false_negative
+resize_0.5,REAL/0566 (5).jpg,0,1,0.999141,false_positive
+resize_0.5,REAL/0099.jpg,0,1,0.999355,false_positive

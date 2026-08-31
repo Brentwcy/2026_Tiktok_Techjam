@@ -67,7 +67,10 @@ Backbone comparison:
 | DINOv3 ViT-S/16 (frozen backbone) | 91.80% | 97.63% | 87.93% | 77.47% |
 
 The DINO results are frozen-backbone engineering baselines, not fully
-fine-tuned foundation-model results.
+fine-tuned foundation-model results. The raw comparison evidence is included
+in [`results/model_comparison.csv`](https://github.com/Brentwcy/2026_Tiktok_Techjam/blob/main/results/model_comparison.csv),
+[`results/dinov2_clean_results.csv`](https://github.com/Brentwcy/2026_Tiktok_Techjam/blob/main/results/dinov2_clean_results.csv),
+and [`results/dinov3_robustness_table.csv`](https://github.com/Brentwcy/2026_Tiktok_Techjam/blob/main/results/dinov3_robustness_table.csv).
 
 ## Development tools
 
@@ -119,9 +122,9 @@ Gradio.
 - Evaluate against the WildFake demo subset to measure out-of-distribution
   generalization beyond CIFAKE.
 - Add SID_Set for higher-resolution, more diverse generator coverage.
-- Error-pattern analysis across `results/error_analysis.csv` to identify
-  which transform/severity combinations drive the most false
-  positives/negatives.
+- Extend the included representative error examples into a visual failure
+  gallery to communicate which transform/severity combinations drive the most
+  false positives and false negatives.
 
 ## Team
 
