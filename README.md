@@ -142,8 +142,8 @@ Inference was run on 20,000 images to produce the required `{image_path, pred}`
 JSON output.
 
 **Trained checkpoint**: `checkpoints/best.pt` is not committed to this repo
-(binary, gitignored). Download it from: `<TODO: GitHub Release asset or Drive
-link>`.
+(binary, gitignored). Download the public, read-only checkpoint from
+[Google Drive](https://drive.google.com/file/d/1l4Kw8aW6vv8uzTmvM3Lzhqfz_zchWUpN/view).
 
 ## Limitations / future work
 
