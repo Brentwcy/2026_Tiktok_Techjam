@@ -33,7 +33,8 @@ TRANSFORM = transforms.Compose([
 
 
 def load_model(checkpoint_path, device):
-    ckpt = torch.load(checkpoint_path, map_location=device)
+    # This inference script only loads checkpoints produced by this project.
+    ckpt = torch.load(checkpoint_path, map_location=device, weights_only=False)
     model = build_model(ckpt["backbone"], pretrained=False).to(device)
     model.load_state_dict(ckpt["model_state"])
     model.eval()
