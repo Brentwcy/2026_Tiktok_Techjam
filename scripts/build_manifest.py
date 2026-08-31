@@ -5,7 +5,9 @@ downloaded datasets.
 
 IMPORTANT: never point this at the WildFake demo subset (COCO val2017 reals +
 DALL-E Advanced fakes) -- that split is reserved by the problem statement as a
-held-out benchmark, not training data. Use build_demo_manifest.py for that one.
+held-out benchmark, not training data. Build it with this same script, but into
+a separate --add_to file (e.g. data/processed/demo.csv) that never gets merged
+into train.csv/val.csv.
 
 Usage (generic real/fake folder layout, e.g. CIFAKE's train/REAL, train/FAKE):
     python scripts/build_manifest.py \
@@ -21,7 +23,10 @@ accumulate a combined manifest, then split it:
 
 import argparse
 import csv
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))  # allow `python scripts/build_manifest.py`
 
 from sklearn.model_selection import train_test_split
 

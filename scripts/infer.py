@@ -12,7 +12,10 @@ Usage:
 
 import argparse
 import json
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))  # allow `python scripts/infer.py`
 
 import torch
 from PIL import Image
@@ -33,7 +36,7 @@ TRANSFORM = transforms.Compose([
 
 
 def load_model(checkpoint_path, device):
-    ckpt = torch.load(checkpoint_path, map_location=device)
+    ckpt = torch.load(checkpoint_path, map_location=device, weights_only=False)
     model = build_model(ckpt["backbone"], pretrained=False).to(device)
     model.load_state_dict(ckpt["model_state"])
     model.eval()
