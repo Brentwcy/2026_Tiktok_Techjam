@@ -132,9 +132,11 @@ Trained on GPU (Colab) on 85,000 CIFAKE images.
 | Worst-case accuracy (0.25× resize) | 87.55% |
 | Severe-blur accuracy (σ=2.0) | 89.65% |
 
-The final CSV artifacts are currently being copied from the Colab run into
-the tracked [`results/`](results/) directory. See `results/README.md` for the
-expected files.
+Full per-transform results are available in
+[`results/robustness_table.csv`](results/robustness_table.csv). The tracked
+[`results/train_log.csv`](results/train_log.csv) records the four training
+epochs, while [`results/error_summary.csv`](results/error_summary.csv)
+provides compact per-condition misclassification counts.
 
 Inference was run on 20,000 images to produce the required `{image_path, pred}`
 JSON output.

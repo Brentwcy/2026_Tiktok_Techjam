@@ -1,9 +1,9 @@
 """
 Binary AIGC-vs-real classifier built on a pretrained timm backbone.
 
-Default backbone is a CLIP-pretrained ViT-B/16, which transfers well to
-image-authenticity tasks with limited fine-tuning data/time. Swap
---backbone to something lighter (e.g. convnext_tiny) if compute is tight.
+Default backbone is EfficientNet-B0, matching the reported trained model and
+providing a strong speed/accuracy tradeoff for time-constrained fine-tuning.
+Use --backbone to select another timm image-classification backbone.
 """
 
 import timm
@@ -12,7 +12,7 @@ import torch.nn as nn
 
 
 class AIGCDetector(nn.Module):
-    def __init__(self, backbone_name: str = "vit_base_patch16_clip_224.openai", pretrained: bool = True,
+    def __init__(self, backbone_name: str = "efficientnet_b0", pretrained: bool = True,
                  freeze_backbone: bool = False):
         super().__init__()
         self.backbone = timm.create_model(backbone_name, pretrained=pretrained, num_classes=0)
@@ -33,6 +33,6 @@ class AIGCDetector(nn.Module):
             p.requires_grad = True
 
 
-def build_model(backbone_name: str = "vit_base_patch16_clip_224.openai", pretrained: bool = True,
+def build_model(backbone_name: str = "efficientnet_b0", pretrained: bool = True,
                  freeze_backbone: bool = False) -> AIGCDetector:
     return AIGCDetector(backbone_name=backbone_name, pretrained=pretrained, freeze_backbone=freeze_backbone)

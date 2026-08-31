@@ -6,7 +6,7 @@ Example:
     python -m src.train \
         --train_manifest data/processed/train.csv \
         --val_manifest data/processed/val.csv \
-        --backbone vit_base_patch16_clip_224.openai \
+        --backbone efficientnet_b0 \
         --epochs 5 --batch_size 32 --lr 3e-5 \
         --checkpoint_out checkpoints/best.pt
 """
@@ -48,7 +48,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--train_manifest", required=True)
     ap.add_argument("--val_manifest", required=True)
-    ap.add_argument("--backbone", default="vit_base_patch16_clip_224.openai")
+    ap.add_argument("--backbone", default="efficientnet_b0")
     ap.add_argument("--epochs", type=int, default=5)
     ap.add_argument("--batch_size", type=int, default=32)
     ap.add_argument("--lr", type=float, default=3e-5)
