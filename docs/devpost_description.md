@@ -41,9 +41,9 @@ upload an image and immediately see the real-versus-AIGC confidence scores.
   and DINOv3 baselines. EfficientNet-B0 remained the final model because it
   produced the best clean and transformed-image results while being faster
   and lighter for interactive inference.
-- **Interactive demo**: a Gradio app automatically downloads the public
-  checkpoint, accepts an uploaded image, and returns the model decision and
-  both class confidence scores. It runs on either CPU or GPU.
+- **Interactive demo**: Streamlit and Gradio interfaces automatically
+  download the public checkpoint, accept an uploaded image, and return the
+  model decision and both class confidence scores. Both run on CPU or GPU.
 
 ## Results
 
@@ -76,7 +76,7 @@ and [`results/dinov3_robustness_table.csv`](https://github.com/Brentwcy/2026_Tik
 
 - VS Code (local development)
 - Google Colab (GPU training/inference)
-- Gradio (interactive image-upload demo)
+- Streamlit and Gradio (interactive image-upload demos)
 - Git / GitHub
 
 ## Models / APIs used
@@ -89,8 +89,8 @@ and [`results/dinov3_robustness_table.csv`](https://github.com/Brentwcy/2026_Tik
 
 ## Libraries and frameworks
 
-PyTorch, torchvision, timm, scikit-learn, pandas, NumPy, Pillow, tqdm, and
-Gradio.
+PyTorch, torchvision, timm, scikit-learn, pandas, NumPy, Pillow, tqdm,
+Streamlit, and Gradio.
 
 ## Datasets and assets used
 

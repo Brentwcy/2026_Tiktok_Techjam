@@ -3,72 +3,32 @@
 
 import argparse
 import os
-import urllib.request
 from pathlib import Path
 
 import gradio as gr
-import torch
 from PIL import Image
 
-from scripts.infer import TRANSFORM, load_model
-
-
-DEFAULT_CHECKPOINT = Path("checkpoints/best.pt")
-CHECKPOINT_DOWNLOAD_URL = (
-    "https://drive.usercontent.google.com/download?"
-    "id=1l4Kw8aW6vv8uzTmvM3Lzhqfz_zchWUpN&export=download&confirm=t"
-)
-MIN_CHECKPOINT_BYTES = 10_000_000
-
-
-def ensure_checkpoint(path: Path) -> Path:
-    """Download the public checkpoint when it is not already available."""
-    if path.exists() and path.stat().st_size >= MIN_CHECKPOINT_BYTES:
-        return path
-
-    path.parent.mkdir(parents=True, exist_ok=True)
-    partial_path = path.with_suffix(path.suffix + ".part")
-    partial_path.unlink(missing_ok=True)
-    print(f"downloading trained checkpoint -> {path}")
-    try:
-        urllib.request.urlretrieve(CHECKPOINT_DOWNLOAD_URL, partial_path)
-        if partial_path.stat().st_size < MIN_CHECKPOINT_BYTES:
-            raise RuntimeError(
-                f"checkpoint download is unexpectedly small: "
-                f"{partial_path.stat().st_size} bytes"
-            )
-        partial_path.replace(path)
-    finally:
-        partial_path.unlink(missing_ok=True)
-    return path
+from src.demo_utils import DEFAULT_CHECKPOINT, Detector
 
 
 def build_demo(checkpoint: Path, threshold: float = 0.5) -> gr.Blocks:
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model = load_model(ensure_checkpoint(checkpoint), device)
+    detector = Detector(checkpoint)
 
     def predict(image: Image.Image | None):
         if image is None:
             raise gr.Error("Upload an image before clicking Analyze.")
 
-        image = image.convert("RGB")
-        tensor = TRANSFORM(image).unsqueeze(0).to(device)
-        with torch.inference_mode():
-            ai_probability = torch.sigmoid(model(tensor)).item()
-
-        real_probability = 1.0 - ai_probability
-        decision = "AI-generated" if ai_probability >= threshold else "Likely real"
-        confidence = ai_probability if decision == "AI-generated" else real_probability
+        result = detector.predict(image, threshold)
 
         scores = {
-            "AI-generated": ai_probability,
-            "Likely real": real_probability,
+            "AI-generated": result["ai_probability"],
+            "Likely real": result["real_probability"],
         }
         explanation = (
-            f"### Decision: {decision}\n\n"
-            f"**Decision confidence:** {confidence:.1%}  \n"
-            f"**AI-generated probability:** {ai_probability:.1%}  \n"
-            f"**Threshold:** {threshold:.0%}"
+            f"### Decision: {result['decision']}\n\n"
+            f"**Decision confidence:** {result['confidence']:.1%}  \n"
+            f"**AI-generated probability:** {result['ai_probability']:.1%}  \n"
+            f"**Threshold:** {result['threshold']:.0%}"
         )
         return scores, explanation
 
@@ -113,7 +73,7 @@ def build_demo(checkpoint: Path, threshold: float = 0.5) -> gr.Blocks:
             "1.4 images). Treat the score as an experimental signal, not proof "
             "of authenticity."
         )
-        gr.Markdown(f"Runtime device: `{device}`")
+        gr.Markdown(f"Runtime device: `{detector.device}`")
 
     return demo
 

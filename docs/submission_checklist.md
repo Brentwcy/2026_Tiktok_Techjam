@@ -12,7 +12,7 @@
 - [x] Required directory-to-JSON inference script
 - [x] Public `best.pt` checkpoint
 - [x] Fresh-clone checkpoint download and inference test
-- [x] CPU/GPU Gradio image-upload demo
+- [x] CPU/GPU Streamlit and Gradio image-upload demos
 - [x] Devpost description draft
 - [x] Demo video script
 

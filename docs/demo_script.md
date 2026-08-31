@@ -1,7 +1,7 @@
 # Demo video script (about 90 seconds)
 
-Use your own or clearly licensed sample images. Keep the Gradio Colab cell
-running throughout the recording.
+Use your own or clearly licensed sample images. Keep the Streamlit or Gradio
+app running throughout the recording.
 
 ## 0:00–0:12 — Problem
 
@@ -17,7 +17,7 @@ Show the repository and architecture summary.
 Training randomly applies the exact six transformation families from the
 challenge, while a separate harness evaluates every required severity.”
 
-## 0:27–0:52 — Live Gradio demo
+## 0:27–0:52 — Live image-upload demo
 
 Upload one image, click **Analyze image**, and show the decision plus both
 confidence scores. If possible, repeat with a compressed or resized version.

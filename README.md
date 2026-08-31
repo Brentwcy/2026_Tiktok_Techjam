@@ -19,8 +19,9 @@ round-trips, sensor noise, color jitter, and center cropping.
   the held-out test set both clean and under every (transform, severity)
   combination from the table, producing the robustness summary and an error
   analysis of false positives/negatives.
-- **Interactive demo**: a Gradio image uploader runs the final EfficientNet-B0
-  checkpoint on CPU or GPU and displays real-versus-AIGC confidence scores.
+- **Interactive demos**: Streamlit and Gradio image uploaders run the final
+  EfficientNet-B0 checkpoint on CPU or GPU and display real-versus-AIGC
+  confidence scores.
 
 ## Setup
 
@@ -113,7 +114,22 @@ python scripts/infer.py --input_dir path/to/images \
     --output preds.json
 ```
 
-## Interactive image-upload demo
+## Interactive image-upload demos
+
+Both interfaces automatically download the same public EfficientNet-B0
+checkpoint when `checkpoints/best.pt` is missing.
+
+### Streamlit
+
+```bash
+pip install -r requirements-streamlit.txt
+streamlit run streamlit_app.py
+```
+
+Streamlit opens the app in a browser and includes an adjustable decision
+threshold, model metrics, and both class probabilities.
+
+### Gradio
 
 The Gradio demo automatically downloads the public EfficientNet-B0 checkpoint
 when `checkpoints/best.pt` is missing, then provides an image uploader with
