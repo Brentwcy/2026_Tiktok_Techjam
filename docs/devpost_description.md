@@ -22,9 +22,9 @@ signal.
 
 ## How we built it
 
-- **Model**: a CLIP ViT-B/16 backbone (pretrained, via `timm`) fine-tuned with
-  a binary classification head, using a freeze-then-unfreeze schedule
-  (head-only warmup, then full fine-tuning).
+- **Model**: an EfficientNet-B0 backbone (pretrained, via `timm`) fine-tuned
+  with a binary classification head, using a freeze-then-unfreeze schedule
+  (one head-only warmup epoch, then full-backbone fine-tuning).
 - **Robustness-by-training, not just robustness-by-evaluation**: rather than
   training clean and hoping it generalizes, every training batch has a
   random chance of being run through one of the six problem-statement
@@ -44,8 +44,11 @@ Trained on 85,000 images from CIFAKE on GPU (Colab).
 
 - Clean-eval accuracy: **97.58%**
 - Clean-eval AUROC: **99.75%**
-- Full per-transform robustness table: `<TODO: paste headline numbers from
-  results/robustness_table.csv once committed>`
+- Average accuracy across all transformed test sets: **94.45%**
+- Worst-case accuracy: **87.55%** under a 0.25× resize round-trip
+- Severe-blur accuracy: **89.65%** at Gaussian blur σ=2.0
+- Full per-transform robustness table: `<TODO: attach
+  results/robustness_table.csv once copied from Colab>`
 - Ran inference end-to-end on 20,000 images to validate the required output
   schema at scale.
 
@@ -57,9 +60,9 @@ Trained on 85,000 images from CIFAKE on GPU (Colab).
 
 ## Models / APIs used
 
-- CLIP ViT-B/16 pretrained weights (`vit_base_patch16_clip_224.openai`),
-  loaded via `timm`. No external inference APIs — everything runs locally
-  against the checkpoint.
+- EfficientNet-B0 pretrained weights (`efficientnet_b0`), loaded via `timm`.
+  No external inference APIs — everything runs locally against the
+  checkpoint.
 
 ## Libraries and frameworks
 
@@ -67,7 +70,8 @@ PyTorch, torchvision, timm, scikit-learn, pandas, NumPy, Pillow, tqdm.
 
 ## Datasets and assets used
 
-- **CIFAKE** (Kaggle, birdy654) — training data, 85,000 images.
+- **CIFAKE** (Kaggle, birdy654) — 85,000 training images (42,500 real and
+  42,500 AI-generated), plus separate validation and test splits.
 - WildFake demo subset (COCO val2017 reals + DALL·E Advanced fakes) —
   reserved by the problem statement as a held-out benchmark; **not** used in
   training. `<TODO: confirm whether an evaluation pass against this subset

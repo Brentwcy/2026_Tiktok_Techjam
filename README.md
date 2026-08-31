@@ -8,8 +8,9 @@ round-trips, sensor noise, color jitter, and center cropping.
 
 ## Project overview
 
-- **Model**: a pretrained CLIP ViT-B/16 (`timm`) fine-tuned with a binary
-  classification head (real vs. AIGC).
+- **Model**: a pretrained EfficientNet-B0 (`timm`) fine-tuned with a binary
+  classification head (real vs. AIGC). The classifier head was warmed up for
+  one epoch before the full backbone was unfrozen.
 - **Robustness strategy**: the six transforms from the problem statement's
   robustness table (see `src/data/constants.py`) are applied *during
   training* at random, not just at eval time — the model has to have seen
@@ -28,10 +29,11 @@ pip install -r requirements.txt
 
 Requires a CUDA GPU for reasonable fine-tuning time; runs on CPU but slowly.
 
-## Datasets
+## Supported datasets
 
-Training data (download separately, not committed to this repo — see
-`.gitignore`):
+The pipeline supports the datasets below (download separately; they are not
+committed to this repo). The reported checkpoint and results used **CIFAKE
+only**.
 
 - SID_Set — https://huggingface.co/datasets/saberzl/SID_Set
 - CIFAKE — https://www.kaggle.com/datasets/birdy654/cifake-real-and-ai-generated-synthetic-images
@@ -70,7 +72,9 @@ Build the held-out demo manifest the same way, into a **separate** file
 python -m src.train \
     --train_manifest data/processed/train.csv \
     --val_manifest data/processed/val.csv \
-    --epochs 5 --batch_size 32 --lr 3e-5 \
+    --backbone efficientnet_b0 \
+    --epochs 4 --batch_size 64 --lr 3e-5 \
+    --augment_p 0.5 --freeze_backbone_epochs 1 \
     --checkpoint_out checkpoints/best.pt
 ```
 
@@ -124,10 +128,13 @@ Trained on GPU (Colab) on 85,000 CIFAKE images.
 | --- | --- |
 | Accuracy | 97.58% |
 | AUROC | 99.75% |
+| Average transformed accuracy | 94.45% |
+| Worst-case accuracy (0.25× resize) | 87.55% |
+| Severe-blur accuracy (σ=2.0) | 89.65% |
 
-Full per-transform robustness breakdown: [`results/robustness_table.csv`](results/robustness_table.csv).
-Misclassified-example breakdown: [`results/error_analysis.csv`](results/error_analysis.csv).
-Training curve: [`results/train_log.csv`](results/train_log.csv).
+The final CSV artifacts are currently being copied from the Colab run into
+the tracked [`results/`](results/) directory. See `results/README.md` for the
+expected files.
 
 Inference was run on 20,000 images to produce the required `{image_path, pred}`
 JSON output.
