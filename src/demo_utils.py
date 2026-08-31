@@ -1,4 +1,4 @@
-"""Shared inference helpers for the Gradio and Streamlit demos."""
+"""Shared inference helpers for the Gradio demo."""
 
 import urllib.request
 from pathlib import Path

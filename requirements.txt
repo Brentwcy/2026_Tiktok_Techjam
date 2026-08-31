@@ -10,7 +10,5 @@ Pillow>=10.0
 tqdm>=4.66
 matplotlib>=3.7
 
-# Interactive Web Demos
+# Interactive Web Demo
 gradio>=5.0,<7
-streamlit>=1.40,<2
-

@@ -19,13 +19,15 @@ round-trips, sensor noise, color jitter, and center cropping.
   the held-out test set both clean and under every (transform, severity)
   combination from the table, producing the robustness summary and an error
   analysis of false positives/negatives.
-- **Interactive demos**: Streamlit and Gradio image uploaders run the final
-  EfficientNet-B0 checkpoint on CPU or GPU. The Gradio demo features side-by-side
+- **Interactive demo**: A Gradio image uploader runs the final EfficientNet-B0
+  checkpoint on CPU or GPU. The demo features side-by-side
   clean and transformed previews, a live **Transformation Toggle** across all 14
   Track 5 degradation settings (JPEG 30, blur σ=2.0, 0.25× resize, noise, etc.),
-  and real-time confidence shift (Δ) and decision stability metrics.
+  and real-time confidence shift (Δ) metrics.
 
 ## Setup
+
+Requires Python 3.10 or newer.
 
 ```bash
 python -m venv .venv && source .venv/bin/activate
@@ -116,10 +118,10 @@ python scripts/infer.py --input_dir path/to/images \
     --output preds.json
 ```
 
-## Interactive image-upload demos
+## Interactive image-upload demo
 
-Both interfaces automatically download the same public EfficientNet-B0
-checkpoint when `checkpoints/best.pt` is missing.
+The interface automatically downloads the public EfficientNet-B0 checkpoint
+when `checkpoints/best.pt` is missing.
 
 ### Gradio (with Live Robustness Toggle)
 
@@ -133,7 +135,7 @@ to simulate Track 5 platform degradations live:
   conditions (JPEG 30–90, blur σ=0.5–2.0, resize 0.25–0.50×, noise, color
   jitter, and center crop).
 - **Robustness Shift Analysis**: Displays active decision confidence, clean
-  P(AI), transformed P(AI), confidence shift (Δ), and decision stability.
+  P(AI), transformed P(AI), and confidence shift (Δ).
 
 ```bash
 python app.py --share
@@ -141,15 +143,6 @@ python app.py --share
 
 `--share` creates a temporary public Gradio link while the process remains
 running. Omit it when the demo should only be accessible locally.
-
-### Streamlit
-
-```bash
-streamlit run streamlit_app.py
-```
-
-Streamlit opens the app in a browser and includes an adjustable decision
-threshold, model metrics, and both class probabilities.
 
 ## Reproducing results
 
@@ -226,9 +219,3 @@ JSON output.
 - With more time: add SID_Set for resolution/generator diversity, run the
   WildFake demo-subset evaluation, and inspect the false-positive/negative
   examples in `results/error_examples.csv` for systematic failure patterns.
-
-## Team contributions
-
-Before submission, list each team member and their actual contribution here.
-Do not leave this section generic: identify ownership of data preparation,
-model training, robustness evaluation, demo/integration, and presentation.

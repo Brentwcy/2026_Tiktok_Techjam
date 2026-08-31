@@ -70,6 +70,10 @@ def build_demo(checkpoint: Path = DEFAULT_CHECKPOINT, threshold: float = 0.5) ->
         clean_result = detector.predict(image, threshold)
         clean_ai_prob = clean_result["ai_probability"]
         clean_decision = clean_result["decision"]
+        clean_scores = {
+            "AI-generated": clean_ai_prob,
+            "Likely real": clean_result["real_probability"],
+        }
 
         transform_setting = TRANSFORM_OPTIONS.get(transform_choice)
 
@@ -81,26 +85,27 @@ def build_demo(checkpoint: Path = DEFAULT_CHECKPOINT, threshold: float = 0.5) ->
             # Evaluate transformed image
             eval_result = detector.predict(transformed_image, threshold)
             eval_ai_prob = eval_result["ai_probability"]
-            eval_real_prob = eval_result["real_probability"]
-            decision = eval_result["decision"]
-            confidence = eval_result["confidence"]
-
             preview_image = transformed_image
-            is_transformed = True
         else:
+            eval_result = clean_result
             eval_ai_prob = clean_ai_prob
-            eval_real_prob = clean_result["real_probability"]
-            decision = clean_decision
-            confidence = clean_result["confidence"]
             preview_image = image
-            is_transformed = False
 
-        scores = {
+        transformed_scores = {
             "AI-generated": eval_ai_prob,
-            "Likely real": eval_real_prob,
+            "Likely real": eval_result["real_probability"],
         }
+        delta = eval_ai_prob - clean_ai_prob
+        transform_name = transform_choice or "None (Clean Image)"
+        summary = (
+            "### Transformation effect\n"
+            f"- **Selected transformation:** {transform_name}\n"
+            f"- **Clean decision:** {clean_decision} ({clean_result['confidence']:.1%} confidence)\n"
+            f"- **Transformed decision:** {eval_result['decision']} ({eval_result['confidence']:.1%} confidence)\n"
+            f"- **Change in P(AI):** {delta:+.1%}"
+        )
 
-        return preview_image, scores
+        return preview_image, clean_scores, transformed_scores, summary
 
     with gr.Blocks(
         title="AI-Generated Image Detector — Track 5",
@@ -122,6 +127,10 @@ def build_demo(checkpoint: Path = DEFAULT_CHECKPOINT, threshold: float = 0.5) ->
                     sources=["upload", "clipboard", "webcam"],
                     height=330,
                     elem_classes=["image-box"],
+                )
+                clean_result_label = gr.Label(
+                    label="Original Image Confidence Scores",
+                    num_top_classes=2,
                 )
                 transform_dropdown = gr.Dropdown(
                     choices=list(TRANSFORM_OPTIONS.keys()),
@@ -155,18 +164,27 @@ def build_demo(checkpoint: Path = DEFAULT_CHECKPOINT, threshold: float = 0.5) ->
                     height=330,
                     elem_classes=["image-box"],
                 )
-                result_label = gr.Label(
-                    label="Model Confidence Scores",
+                transformed_result_label = gr.Label(
+                    label="Transformed Image Confidence Scores",
                     num_top_classes=2,
                 )
 
+        effect_summary = gr.Markdown()
+
         # Wire clear button to reset outputs as well
-        clear_button.add([preview_output, result_label])
+        clear_button.add(
+            [preview_output, clean_result_label, transformed_result_label, effect_summary]
+        )
 
         analyze_button.click(
             fn=predict,
             inputs=[image_input, transform_dropdown],
-            outputs=[preview_output, result_label],
+            outputs=[
+                preview_output,
+                clean_result_label,
+                transformed_result_label,
+                effect_summary,
+            ],
         )
 
     return demo
@@ -197,4 +215,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
