@@ -4,6 +4,10 @@ Required inference script (Track 5 deliverable #2): takes a directory of
 images and outputs a JSON file with an image_path and pred (confidence that
 the image is AIGC-generated, in [0, 1]) for each image.
 
+image_path is written relative to --input_dir, not absolute -- the problem
+statement doesn't specify a convention, and a relative path keeps the output
+reproducible when a reviewer re-runs this on a different machine/checkout.
+
 Usage:
     python scripts/infer.py --input_dir path/to/images \
         --checkpoint checkpoints/best.pt \
@@ -69,7 +73,8 @@ def main():
         with torch.no_grad():
             probs = torch.sigmoid(model(x)).cpu().numpy()
         for p, prob in zip(batch_paths, probs):
-            results.append({"image_path": str(p), "pred": float(prob)})
+            rel = p.relative_to(args.input_dir)
+            results.append({"image_path": str(rel), "pred": float(prob)})
         batch_imgs.clear()
         batch_paths.clear()
 

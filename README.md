@@ -92,6 +92,10 @@ Produces:
 - `outputs/error_analysis.csv` — every misclassified image with its
   confidence score and error type (false positive / false negative).
 
+`outputs/` itself is gitignored (scratch space). Once a run is final, copy
+its CSVs into the tracked `results/` folder so they ship with the repo —
+see [Results](#results).
+
 ## Inference (deliverable #2 — required script)
 
 Takes a directory of images, outputs a JSON file of `{image_path, pred}`
@@ -112,12 +116,42 @@ python scripts/infer.py --input_dir path/to/images \
 5. Run inference on a held-out image directory to sanity-check the output
    schema.
 
+## Results
+
+Trained on GPU (Colab) on 85,000 CIFAKE images.
+
+| Metric (clean eval) | Score |
+| --- | --- |
+| Accuracy | 97.58% |
+| AUROC | 99.75% |
+
+Full per-transform robustness breakdown: [`results/robustness_table.csv`](results/robustness_table.csv).
+Misclassified-example breakdown: [`results/error_analysis.csv`](results/error_analysis.csv).
+Training curve: [`results/train_log.csv`](results/train_log.csv).
+
+Inference was run on 20,000 images to produce the required `{image_path, pred}`
+JSON output.
+
+**Trained checkpoint**: `checkpoints/best.pt` is not committed to this repo
+(binary, gitignored). Download it from: `<TODO: GitHub Release asset or Drive
+link>`.
+
 ## Limitations / future work
 
-_TODO before submission: fill in after the training run — e.g. dataset
-resolution mismatch (CIFAKE is 32×32), which transforms hurt accuracy most,
-generalization gap on the WildFake demo subset vs. training distribution,
-what a second day of work would add._
+- **Trained only on CIFAKE**, not SID_Set — CIFAKE alone got the pipeline to a
+  working, well-scoring model inside the time budget; SID_Set integration
+  (higher-resolution, more diverse generators) was scoped out as a stretch
+  goal, not attempted.
+- **CIFAKE images are 32×32** (CIFAR-based), upscaled to 224×224 for the
+  backbone. This is a real resolution mismatch versus full-size real-world
+  images and is the most likely source of any generalization gap.
+- **Generalization to the WildFake/COCO–DALL·E demo subset is untested** as
+  of this writing — that subset was correctly excluded from training per the
+  problem statement, but a held-out evaluation pass against it hasn't been
+  run yet. Numbers above are CIFAKE-internal only.
+- With more time: add SID_Set for resolution/generator diversity, run the
+  WildFake demo-subset evaluation, and inspect the false-positive/negative
+  gallery in `results/error_analysis.csv` for systematic failure patterns.
 
 ## Team contributions
 

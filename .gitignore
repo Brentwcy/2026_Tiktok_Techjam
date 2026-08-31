@@ -18,3 +18,4 @@ outputs/*
 *.ckpt
 *.pt
 *.pth
+# checkpoints are intentionally not committed -- distribute via GitHub Release or a documented Drive link instead
