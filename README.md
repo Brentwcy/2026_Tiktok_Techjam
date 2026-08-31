@@ -121,16 +121,6 @@ python scripts/infer.py --input_dir path/to/images \
 Both interfaces automatically download the same public EfficientNet-B0
 checkpoint when `checkpoints/best.pt` is missing.
 
-### Streamlit
-
-```bash
-pip install -r requirements.txt
-streamlit run streamlit_app.py
-```
-
-Streamlit opens the app in a browser and includes an adjustable decision
-threshold, model metrics, and both class probabilities.
-
 ### Gradio (with Live Robustness Toggle)
 
 The Gradio demo provides an interactive interface with side-by-side image
@@ -146,12 +136,20 @@ to simulate Track 5 platform degradations live:
   P(AI), transformed P(AI), confidence shift (Δ), and decision stability.
 
 ```bash
-pip install -r requirements.txt
 python app.py --share
 ```
 
 `--share` creates a temporary public Gradio link while the process remains
 running. Omit it when the demo should only be accessible locally.
+
+### Streamlit
+
+```bash
+streamlit run streamlit_app.py
+```
+
+Streamlit opens the app in a browser and includes an adjustable decision
+threshold, model metrics, and both class probabilities.
 
 ## Reproducing results
 
