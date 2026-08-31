@@ -47,8 +47,7 @@ Trained on 85,000 images from CIFAKE on GPU (Colab).
 - Average accuracy across all transformed test sets: **94.45%**
 - Worst-case accuracy: **87.55%** under a 0.25× resize round-trip
 - Severe-blur accuracy: **89.65%** at Gaussian blur σ=2.0
-- Full per-transform robustness table: `<TODO: attach
-  results/robustness_table.csv once copied from Colab>`
+- Full per-transform robustness table: see [`results/robustness_table.csv`](https://github.com/Brentwcy/2026_Tiktok_Techjam/blob/main/results/robustness_table.csv) `<TODO: this link 404s until the CSV is committed>`
 - Ran inference end-to-end on 20,000 images to validate the required output
   schema at scale.
 
