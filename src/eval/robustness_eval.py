@@ -86,6 +86,7 @@ def main():
     args = ap.parse_args()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    # This evaluator only loads checkpoints produced by this project.
     ckpt = torch.load(args.checkpoint, map_location=device, weights_only=False)
     model = build_model(ckpt["backbone"], pretrained=False).to(device)
     model.load_state_dict(ckpt["model_state"])

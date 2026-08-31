@@ -110,7 +110,7 @@ def main():
         if val_auc > best_auc:
             best_auc = val_auc
             torch.save({"model_state": model.state_dict(), "backbone": args.backbone,
-                        "epoch": epoch, "val_auc": val_auc}, args.checkpoint_out)
+                        "epoch": epoch, "val_auc": float(val_auc)}, args.checkpoint_out)
             print(f"  saved new best checkpoint (val_auc={val_auc:.4f}) -> {args.checkpoint_out}")
 
     with open(args.log_csv, "w", newline="") as f:
