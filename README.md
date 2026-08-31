@@ -111,6 +111,20 @@ python scripts/infer.py --input_dir path/to/images \
     --output preds.json
 ```
 
+## Interactive image-upload demo
+
+The Gradio demo automatically downloads the public EfficientNet-B0 checkpoint
+when `checkpoints/best.pt` is missing, then provides an image uploader with
+real-versus-AIGC confidence scores:
+
+```bash
+pip install -r requirements-demo.txt
+python app.py --share
+```
+
+`--share` creates a temporary public Gradio link while the process remains
+running. Omit it when the demo should only be accessible locally.
+
 ## Reproducing results
 
 1. Download the datasets above into `data/raw/`.
