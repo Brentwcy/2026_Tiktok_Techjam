@@ -124,7 +124,7 @@ checkpoint when `checkpoints/best.pt` is missing.
 ### Streamlit
 
 ```bash
-pip install -r requirements-streamlit.txt
+pip install -r requirements.txt
 streamlit run streamlit_app.py
 ```
 
@@ -146,7 +146,7 @@ to simulate Track 5 platform degradations live:
   P(AI), transformed P(AI), confidence shift (Δ), and decision stability.
 
 ```bash
-pip install -r requirements-demo.txt
+pip install -r requirements.txt
 python app.py --share
 ```
 
