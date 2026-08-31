@@ -203,6 +203,7 @@ def main():
     parser.add_argument("--checkpoint", type=Path, default=DEFAULT_CHECKPOINT)
     parser.add_argument("--threshold", type=float, default=0.5)
     parser.add_argument("--share", action="store_true")
+    parser.add_argument("--server-name", type=str, default="127.0.0.1")
     parser.add_argument("--server-port", type=int, default=7860)
     args = parser.parse_args()
 
@@ -212,7 +213,7 @@ def main():
     os.environ.setdefault("GRADIO_ANALYTICS_ENABLED", "False")
     demo = build_demo(args.checkpoint, args.threshold)
     demo.queue(default_concurrency_limit=2).launch(
-        server_name="0.0.0.0",
+        server_name=args.server_name,
         server_port=args.server_port,
         share=args.share,
         show_error=True,
