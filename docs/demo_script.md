@@ -19,11 +19,9 @@ challenge, while a separate harness evaluates every required severity.”
 
 ## 0:27–0:52 — Live image-upload demo
 
-Upload one image, click **Analyze image**, and show the decision plus both
-confidence scores. If possible, repeat with a compressed or resized version.
+Upload one image, show the clean inference, then select **JPEG Compression (Quality = 30)** or **Resize Roundtrip (0.25×)** from the **Transformation Toggle** dropdown and click **Analyze image**.
 
-“The same checkpoint used for our reported evaluation powers this interface.
-It runs locally without an external inference API and can also run on CPU.”
+“Here, our interactive demo shows the original image alongside the transformed preview. Notice how the model's confidence holds steady with minimal shift, remaining invariant even under heavy JPEG re-compression. The same checkpoint used for our reported evaluation powers this interface running locally.”
 
 ## 0:52–1:12 — Results
 

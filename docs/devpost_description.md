@@ -17,8 +17,11 @@ blur, resize round-trips, sensor noise, color jitter, and center cropping.
 Given a directory of images, the model outputs a confidence score (0–1) per
 image indicating the likelihood it's AI-generated, as a JSON file of
 `{image_path, pred}` entries — usable as a drop-in moderation/trust-and-safety
-signal. For an accessible demonstration, our Gradio interface lets a user
-upload an image and immediately see the real-versus-AIGC confidence scores.
+signal. For an accessible demonstration, our Gradio interface provides a
+side-by-side image viewer with a live **Transformation Toggle** across all 14
+Track 5 degradation conditions (JPEG 30, blur σ=2.0, 0.25× resize, sensor
+noise, etc.), allowing judges to directly watch confidence scores hold steady
+under real-world platform degradations.
 
 ## How we built it
 
@@ -42,8 +45,10 @@ upload an image and immediately see the real-versus-AIGC confidence scores.
   produced the best clean and transformed-image results while being faster
   and lighter for interactive inference.
 - **Interactive demo**: Streamlit and Gradio interfaces automatically
-  download the public checkpoint, accept an uploaded image, and return the
-  model decision and both class confidence scores. Both run on CPU or GPU.
+  download the public checkpoint and run on CPU or GPU. The Gradio interface
+  features side-by-side clean vs transformed previews, reporting the model
+  decision, confidence shift (Δ), and stability status across all Track 5
+  transformations.
 
 ## Results
 

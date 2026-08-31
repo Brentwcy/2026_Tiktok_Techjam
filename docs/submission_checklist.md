@@ -12,9 +12,9 @@
 - [x] Required directory-to-JSON inference script
 - [x] Public `best.pt` checkpoint
 - [x] Fresh-clone checkpoint download and inference test
-- [x] CPU/GPU Streamlit and Gradio image-upload demos
+- [x] CPU/GPU Streamlit and Gradio demos (including live Track 5 transformation toggle and side-by-side comparison)
 - [x] Devpost description draft
-- [x] Demo video script
+- [x] Demo video script with live robustness demonstration walkthrough
 
 ## Must complete before submission
 

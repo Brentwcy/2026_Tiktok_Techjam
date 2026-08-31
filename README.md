@@ -20,8 +20,10 @@ round-trips, sensor noise, color jitter, and center cropping.
   combination from the table, producing the robustness summary and an error
   analysis of false positives/negatives.
 - **Interactive demos**: Streamlit and Gradio image uploaders run the final
-  EfficientNet-B0 checkpoint on CPU or GPU and display real-versus-AIGC
-  confidence scores.
+  EfficientNet-B0 checkpoint on CPU or GPU. The Gradio demo features side-by-side
+  clean and transformed previews, a live **Transformation Toggle** across all 14
+  Track 5 degradation settings (JPEG 30, blur σ=2.0, 0.25× resize, noise, etc.),
+  and real-time confidence shift (Δ) and decision stability metrics.
 
 ## Setup
 
@@ -129,11 +131,19 @@ streamlit run streamlit_app.py
 Streamlit opens the app in a browser and includes an adjustable decision
 threshold, model metrics, and both class probabilities.
 
-### Gradio
+### Gradio (with Live Robustness Toggle)
 
-The Gradio demo automatically downloads the public EfficientNet-B0 checkpoint
-when `checkpoints/best.pt` is missing, then provides an image uploader with
-real-versus-AIGC confidence scores:
+The Gradio demo provides an interactive interface with side-by-side image
+comparison, real-versus-AIGC confidence scores, and a **Robustness Toggle**
+to simulate Track 5 platform degradations live:
+
+- **Clean vs Transformed Preview**: Upload an image and see both the original
+  input and the transformed variant at matching dimensions.
+- **Transformation Toggle**: Dropdown selector covering all 14 Track 5
+  conditions (JPEG 30–90, blur σ=0.5–2.0, resize 0.25–0.50×, noise, color
+  jitter, and center crop).
+- **Robustness Shift Analysis**: Displays active decision confidence, clean
+  P(AI), transformed P(AI), confidence shift (Δ), and decision stability.
 
 ```bash
 pip install -r requirements-demo.txt

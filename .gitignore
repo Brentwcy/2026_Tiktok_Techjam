@@ -3,6 +3,8 @@ __pycache__/
 .DS_Store
 .venv/
 venv/
+.gradio/
+
 
 # raw/processed datasets are large and often license-restricted for redistribution
 data/raw/*
