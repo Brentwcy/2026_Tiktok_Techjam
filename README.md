@@ -19,6 +19,8 @@ round-trips, sensor noise, color jitter, and center cropping.
   the held-out test set both clean and under every (transform, severity)
   combination from the table, producing the robustness summary and an error
   analysis of false positives/negatives.
+- **Interactive demo**: a Gradio image uploader runs the final EfficientNet-B0
+  checkpoint on CPU or GPU and displays real-versus-AIGC confidence scores.
 
 ## Setup
 
@@ -146,6 +148,22 @@ Trained on GPU (Colab) on 85,000 CIFAKE images.
 | Worst-case accuracy (0.25× resize) | 87.55% |
 | Severe-blur accuracy (σ=2.0) | 89.65% |
 
+### Backbone selection
+
+We also tested frozen-feature baselines using DINOv2 and DINOv3. EfficientNet
+was retained because it delivered the strongest clean and transformed-image
+performance, while remaining substantially smaller and faster for the demo.
+
+| Backbone | Clean accuracy | Clean AUROC | Avg. transformed accuracy | Worst case |
+| --- | ---: | ---: | ---: | ---: |
+| **EfficientNet-B0 (final)** | **97.58%** | **99.75%** | **94.45%** | **87.55%** |
+| DINOv2 ViT-S/14, frozen backbone | 95.47% | 99.24% | Not fully evaluated | Not fully evaluated |
+| DINOv3 ViT-S/16, frozen backbone | 91.80% | 97.63% | 87.93% | 77.47% |
+
+The DINO experiments used frozen backbones with newly trained classification
+heads, so they are engineering baselines rather than claims about the maximum
+performance obtainable through full DINO fine-tuning.
+
 Full per-transform results are available in
 [`results/robustness_table.csv`](results/robustness_table.csv). The tracked
 [`results/train_log.csv`](results/train_log.csv) records the four training
@@ -178,4 +196,6 @@ JSON output.
 
 ## Team contributions
 
-_TODO: list each team member and what they owned._
+Before submission, list each team member and their actual contribution here.
+Do not leave this section generic: identify ownership of data preparation,
+model training, robustness evaluation, demo/integration, and presentation.

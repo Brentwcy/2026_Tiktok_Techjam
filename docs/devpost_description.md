@@ -1,8 +1,7 @@
-# Devpost description draft — Track 5
+# Devpost description — Track 5
 
-_Draft for copy-paste into Devpost. Fill in the `<TODO>` spots before
-submitting (video link, exact per-transform robustness numbers once
-`results/robustness_table.csv` is committed, team names)._
+Submission-ready copy. Add the team names/contributions and video URL in the
+Devpost form before publishing.
 
 ## Inspiration / problem
 
@@ -18,7 +17,8 @@ blur, resize round-trips, sensor noise, color jitter, and center cropping.
 Given a directory of images, the model outputs a confidence score (0–1) per
 image indicating the likelihood it's AI-generated, as a JSON file of
 `{image_path, pred}` entries — usable as a drop-in moderation/trust-and-safety
-signal.
+signal. For an accessible demonstration, our Gradio interface lets a user
+upload an image and immediately see the real-versus-AIGC confidence scores.
 
 ## How we built it
 
@@ -37,6 +37,13 @@ signal.
   every (transform, severity) combination and reports accuracy/AUROC for
   each, plus a full false-positive/false-negative breakdown with confidence
   scores.
+- **Model selection by evidence**: we also evaluated frozen-feature DINOv2
+  and DINOv3 baselines. EfficientNet-B0 remained the final model because it
+  produced the best clean and transformed-image results while being faster
+  and lighter for interactive inference.
+- **Interactive demo**: a Gradio app automatically downloads the public
+  checkpoint, accepts an uploaded image, and returns the model decision and
+  both class confidence scores. It runs on either CPU or GPU.
 
 ## Results
 
@@ -51,10 +58,22 @@ Trained on 85,000 images from CIFAKE on GPU (Colab).
 - Ran inference end-to-end on 20,000 images to validate the required output
   schema at scale.
 
+Backbone comparison:
+
+| Backbone | Clean accuracy | Clean AUROC | Average transformed accuracy | Worst case |
+| --- | ---: | ---: | ---: | ---: |
+| **EfficientNet-B0 (final)** | **97.58%** | **99.75%** | **94.45%** | **87.55%** |
+| DINOv2 ViT-S/14 (frozen backbone) | 95.47% | 99.24% | Not fully evaluated | Not fully evaluated |
+| DINOv3 ViT-S/16 (frozen backbone) | 91.80% | 97.63% | 87.93% | 77.47% |
+
+The DINO results are frozen-backbone engineering baselines, not fully
+fine-tuned foundation-model results.
+
 ## Development tools
 
 - VS Code (local development)
 - Google Colab (GPU training/inference)
+- Gradio (interactive image-upload demo)
 - Git / GitHub
 
 ## Models / APIs used
@@ -62,10 +81,13 @@ Trained on 85,000 images from CIFAKE on GPU (Colab).
 - EfficientNet-B0 pretrained weights (`efficientnet_b0`), loaded via `timm`.
   No external inference APIs — everything runs locally against the
   checkpoint.
+- DINOv2 ViT-S/14 and DINOv3 ViT-S/16 were tested as frozen-backbone
+  alternatives for model-selection evidence; neither replaced EfficientNet.
 
 ## Libraries and frameworks
 
-PyTorch, torchvision, timm, scikit-learn, pandas, NumPy, Pillow, tqdm.
+PyTorch, torchvision, timm, scikit-learn, pandas, NumPy, Pillow, tqdm, and
+Gradio.
 
 ## Datasets and assets used
 
@@ -73,8 +95,7 @@ PyTorch, torchvision, timm, scikit-learn, pandas, NumPy, Pillow, tqdm.
   42,500 AI-generated), plus separate validation and test splits.
 - WildFake demo subset (COCO val2017 reals + DALL·E Advanced fakes) —
   reserved by the problem statement as a held-out benchmark; **not** used in
-  training. `<TODO: confirm whether an evaluation pass against this subset
-  was completed before submission, and add the result here if so>`.
+  training and not evaluated in the submitted results.
 - SID_Set was considered but not incorporated into training given the time
   budget — noted as a limitation/future-work item.
 
@@ -86,6 +107,12 @@ PyTorch, torchvision, timm, scikit-learn, pandas, NumPy, Pillow, tqdm.
   explicitly passing `weights_only=False` for checkpoints this project
   produces itself, and by casting metrics to plain `float` before saving so
   the pickle doesn't carry numpy scalars in the first place.
+- Larger vision-foundation-model features were not automatically better for
+  this forensic task. The DINO baselines underperformed EfficientNet,
+  reinforcing our decision to prioritize measured robustness over model size.
+- We packaged a public checkpoint and verified it from a fresh Colab clone,
+  including dependency installation, checkpoint loading, inference, and the
+  required JSON schema.
 
 ## What's next
 
@@ -98,4 +125,11 @@ PyTorch, torchvision, timm, scikit-learn, pandas, NumPy, Pillow, tqdm.
 
 ## Team
 
-`<TODO: names + who owned what — data pipeline, training, eval, packaging>`
+Add each team member's name and actual ownership before submission: data,
+training, robustness evaluation, demo/integration, and presentation.
+
+## Links
+
+- Repository: https://github.com/Brentwcy/2026_Tiktok_Techjam
+- Public checkpoint: https://drive.google.com/file/d/1l4Kw8aW6vv8uzTmvM3Lzhqfz_zchWUpN/view
+- Demo video: add the final public video URL in Devpost
